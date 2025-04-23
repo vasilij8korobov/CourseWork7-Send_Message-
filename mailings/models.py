@@ -33,6 +33,11 @@ class Mailing(models.Model):
     clients = models.ManyToManyField(Client)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    class Meta:
+        permissions = [
+            ("view_mailing", "Can view mailing"),
+        ]
+
     def __str__(self):
         return f"Mailing {self.id}"
 

@@ -1,0 +1,13 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<h1>Профиль</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+<a href="{% url 'logout' %}">Выйти</a>
+{% endblock %}

@@ -1,20 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Mailing Service{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{% block title %}Сервис рассылок{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body>
     <header>
         <nav>
-            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}">Главная</a>
             {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}">Profile</a>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'profile' %}">Профиль</a>
+                <a href="{% url 'logout' %}">Выйти</a>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
             {% endif %}
         </nav>
     </header>
@@ -23,7 +24,7 @@
         {% endblock %}
     </main>
     <footer>
-        <p>&copy; 2023 Mailing Service</p>
+        <p>&copy; 2023 Сервис рассылок</p>
     </footer>
 </body>
 </html>

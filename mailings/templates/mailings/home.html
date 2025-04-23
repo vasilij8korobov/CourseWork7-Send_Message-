@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h1>Главная страница</h1>
+<p>Всего рассылок: {{ total_mailings }}</p>
+<p>Активных рассылок: {{ active_mailings }}</p>
+<p>Уникальных клиентов: {{ unique_clients }}</p>
+{% endblock %}
