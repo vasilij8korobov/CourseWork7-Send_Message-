@@ -1,11 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from config.dry import NULLABLE
+
 
 class Client(models.Model):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
-    comment = models.TextField(blank=True, null=True)
+    comment = models.TextField(**NULLABLE)
+
+    class Meta:
+        permissions = [
+            ("view_client_custom", "Can view client"),
+        ]
 
     def __str__(self):
         return self.email
@@ -14,6 +21,11 @@ class Client(models.Model):
 class Message(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
+
+    class Meta:
+        permissions = [
+            ("view_message_custom", "Can view message"),
+        ]
 
     def __str__(self):
         return self.subject
@@ -35,7 +47,7 @@ class Mailing(models.Model):
 
     class Meta:
         permissions = [
-            ("view_mailing", "Can view mailing"),
+            ("view_mailing_custom", "Can view mailing"),
         ]
 
     def __str__(self):
@@ -50,7 +62,7 @@ class MailingAttempt(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    response = models.TextField(blank=True, null=True)
+    response = models.TextField(**NULLABLE)
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -24,5 +24,4 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('users/', include('users.urls')),
     path('mailings/', include('mailings.urls')),
-    path('', include('mailings.urls')),
 ]

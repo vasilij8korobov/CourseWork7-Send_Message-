@@ -1,16 +1,16 @@
 {% extends 'users/base.html' %}
 
-{% block title %}Клиенты{% endblock %}
+{% block title %}Список клиентов{% endblock %}
 
 {% block content %}
-<h1>Clients</h1>
-<a href="{% url 'client_create' %}">Все клиенты</a>
+<h1>Список клиентов</h1>
+<a href="{% url 'client_create' %}" class="btn btn-primary">Добавить клиента</a>
 <ul>
     {% for client in object_list %}
         <li>
             <a href="{% url 'client_detail' client.pk %}">{{ client.email }}</a>
-            <a href="{% url 'client_update' client.pk %}">Редактировать</a>
-            <a href="{% url 'client_delete' client.pk %}">Удалить</a>
+            <a href="{% url 'client_update' client.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger">Удалить</a>
         </li>
     {% endfor %}
 </ul>

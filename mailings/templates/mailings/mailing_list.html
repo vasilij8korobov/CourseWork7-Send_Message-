@@ -4,13 +4,13 @@
 
 {% block content %}
 <h1>Список рассылок</h1>
-<a href="{% url 'mailing_create' %}">Добавить рассылку</a>
+<a href="{% url 'mailing_create' %}" class="btn btn-primary">Добавить рассылку</a>
 <ul>
     {% for mailing in object_list %}
         <li>
             <a href="{% url 'mailing_detail' mailing.pk %}">{{ mailing.start_time }} - {{ mailing.end_time }}</a>
-            <a href="{% url 'mailing_update' mailing.pk %}">Редактировать</a>
-            <a href="{% url 'mailing_delete' mailing.pk %}">Удалить</a>
+            <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-danger">Удалить</a>
         </li>
     {% endfor %}
 </ul>

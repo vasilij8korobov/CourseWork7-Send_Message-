@@ -1,0 +1,17 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Список попыток рассылок{% endblock %}
+
+{% block content %}
+<h1>Список попыток рассылок</h1>
+<ul>
+    {% for attempt in object_list %}
+        <li>
+            <p><strong>Дата и время:</strong> {{ attempt.timestamp }}</p>
+            <p><strong>Статус:</strong> {{ attempt.status }}</p>
+            <p><strong>Ответ сервера:</strong> {{ attempt.response }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'home' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}

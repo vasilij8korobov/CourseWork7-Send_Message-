@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1>Статистика</h1>
+<p>Всего попыток: {{ total_attempts }}</p>
+<p>Успешных попыток: {{ successful_attempts }}</p>
+<p>Неуспешных попыток: {{ failed_attempts }}</p>
+{% endblock %}

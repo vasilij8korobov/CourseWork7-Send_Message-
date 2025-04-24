@@ -4,7 +4,25 @@
 
 {% block content %}
 <h1>Главная страница</h1>
+{% if user.is_authenticated %}
 <p>Всего рассылок: {{ total_mailings }}</p>
 <p>Активных рассылок: {{ active_mailings }}</p>
 <p>Уникальных клиентов: {{ unique_clients }}</p>
+
+<h2>Управление рассылками</h2>
+<a href="{% url 'mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
+
+<h3>Список рассылок</h3>
+<ul>
+    {% for mailing in mailings %}
+        <li>
+            <a href="{% url 'mailing_detail' mailing.pk %}">{{ mailing.start_time }} - {{ mailing.end_time }}</a>
+            <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-danger">Удалить</a>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>Пожалуйста, войдите или зарегистрируйтесь, чтобы управлять рассылками.</p>
+{% endif %}
 {% endblock %}
