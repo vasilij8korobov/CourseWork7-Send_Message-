@@ -1,13 +1,16 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
 
 from config.dry import NULLABLE
 
 
 class Client(models.Model):
     email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=255)
-    comment = models.TextField(**NULLABLE)
+    full_name = models.CharField(max_length=255, verbose_name='Фамилия и инициалы')
+    comment = models.TextField(**NULLABLE, verbose_name='Комментарий')
 
     class Meta:
         permissions = [
@@ -19,8 +22,8 @@ class Client(models.Model):
 
 
 class Message(models.Model):
-    subject = models.CharField(max_length=255)
-    body = models.TextField()
+    subject = models.CharField(max_length=255, verbose_name='Тема')
+    body = models.TextField(verbose_name='Сообщение')
 
     class Meta:
         permissions = [
@@ -33,16 +36,16 @@ class Message(models.Model):
 
 class Mailing(models.Model):
     STATUS_CHOICES = [
-        ('Created', 'Created'),
-        ('Started', 'Started'),
-        ('Completed', 'Completed'),
+        ('Created', 'Создано'),
+        ('Started', 'Запущенно'),
+        ('Completed', 'Завершено'),
     ]
 
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(verbose_name='когда запустить рассылку')
+    end_time = models.DateTimeField(verbose_name='когда закончить рассылку')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    clients = models.ManyToManyField(Client)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='какое сообщение?')
+    clients = models.ManyToManyField(Client, verbose_name='кому отправить?')
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     class Meta:
@@ -54,10 +57,23 @@ class Mailing(models.Model):
         return f"Mailing {self.id}"
 
 
+@receiver(post_save, sender=Mailing)
+def update_mailing_status(sender, instance, created, **kwargs):
+    if created:
+        instance.status = 'Created'
+        instance.save()
+    elif instance.start_time <= timezone.now() <= instance.end_time:
+        instance.status = 'Started'
+        instance.save()
+    elif timezone.now() > instance.end_time:
+        instance.status = 'Completed'
+        instance.save()
+
+
 class MailingAttempt(models.Model):
     STATUS_CHOICES = [
-        ('Success', 'Success'),
-        ('Failure', 'Failure'),
+        ('Success', 'Успешно'),
+        ('Failure', 'Не удалось'),
     ]
 
     timestamp = models.DateTimeField(auto_now_add=True)
