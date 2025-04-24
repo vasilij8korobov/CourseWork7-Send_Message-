@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand
 from mailings.models import Mailing, MailingAttempt
 from django.core.mail import send_mail
+from django.utils import timezone
+
 
 class Command(BaseCommand):
     help = 'Send mailings'
